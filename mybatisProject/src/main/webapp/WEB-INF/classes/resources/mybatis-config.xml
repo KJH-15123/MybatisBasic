@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	
+	<settings>
+			<!-- settings : Mybatis 구동시 선언할 설정들 넣을 태그 -->
+			<!-- java에서 null값이 전달될때 DB에서도 null로 인식할 수 있도록 하는 설정 -->
+		<setting name="jdbcTypeForNull" value="NULL"/>
+	</settings>
+	
+	<!-- DB환경 설정 -->
+	<environments default="development">
+		<environment id="development">
+		
+				<!-- 
+					dataSource : DB 접속 정보를 담는 태그
+					type = "POOLED/UNPOOLED" 설정을 할 수 있음 (Connection Pool 사용 여부)
+					-POOLED : Connection pool을 이용하겠다. (생성된 Connection 재사용-시간 및 자원 절약)
+					-UNPOOLED :Connection pool을 이용하지 않겠다.(매번 재생성-자원 소모)  
+				-->
+			
+			<dataSource type="POOLED">
+				<property name="driver" value="oracle.jdbc.driver.oracleDriver"/>
+				<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>
+				<property name="username" value="MYBATIS"/>
+				<property name="password" value="MYBATIS"/>
+			</dataSource>
+			
+				<!-- 
+					DataSource ds = new DataSource();
+					ds.setDriver("oracle.jdbc.oracleDriver")
+					ds.setUrl("jdbc:oracle:thin:@localhost:1521:xe")
+					...같은 의미
+				 -->
+			 
+		</environment>
+	</environments>
+
+
+
+
+
+
+
+
+</configuration>

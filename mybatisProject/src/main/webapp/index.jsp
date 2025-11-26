@@ -7,7 +7,11 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>환영합니다.</h1>
+
+	<!-- index페이지가 띄워지면 바로 main.jsp로 위임되도록 설정하기 -->
+	
+	<jsp:forward page="/WEB-INF/views/main.jsp"/>
+	
 
 </body>
 </html>
