@@ -7,7 +7,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import com.kh.mybatis.member.model.service.MemberService;
 import com.kh.mybatis.member.model.vo.Member;
 
 /**
@@ -50,6 +52,28 @@ public class loginController extends HttpServlet {
 		Member m = new Member();
 		m.setUserId(userId);
 		m.setUserPwd(userPwd);
+		
+		Member loginMember = new MemberService().loginMember(m);
+		
+		//페이지가 이동되어도 로그인이 풀리지 않고 로그인 정보를 계속 가지고 다닐 수 있도록
+		//session에 담아주기 HttpSession
+		//session은 모든 jsp 모든 servlet에서 접근 가능한 공유 범위
+		HttpSession session = request.getSession();
+		
+		if(loginMember!=null) {
+			//로그인 정보가 있으면
+			session.setAttribute("loginMember",loginMember);
+			session.setAttribute("alertMsg", "로그인 성공!");
+		} else {
+			session.setAttribute("alertMsg", "로그인 실패!");
+		}
+		
+		//로그인 처리가 되었으니 기존 요청을 마무리하고 메인페이지로 이동 요청을 보낸다.
+		//Redirect:재요청
+		//컨텍스트루트를 받아와서 메인페이지로 보내기
+		response.sendRedirect(request.getContextPath());
+		
+		
 		
 		
 		
