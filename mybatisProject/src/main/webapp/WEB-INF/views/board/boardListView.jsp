@@ -28,10 +28,11 @@
 		
 		<%-- 글작성 버튼은 로그인한 회원일 경우 보일 수 있도록 조건처리 --%>
 		
-		
+		$<c:if test="${not empty loginMember }">
 			<div align="center">
 				<a href="${contextPath }/insert.bo" class="btn btn-info">글작성</a>
 			</div>
+		</c:if>
 		
 		<br>
 		

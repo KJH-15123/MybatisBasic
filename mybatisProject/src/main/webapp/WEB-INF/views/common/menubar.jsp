@@ -124,7 +124,7 @@
 	<div class="nav-area" align="center">
 		<div class="menu" onclick="location.href='${contextRoot}'">HOME</div>
 		<div class="menu" >공지사항</div>
-		<div class="menu" onclick="location.href='${contextRoot}/list.bo'">게시판</div>
+		<div class="menu" onclick="location.href='${contextRoot}/list.bo'?currentPage=1">게시판</div>
 		<div class="menu">ETC</div>
 	</div>
 
