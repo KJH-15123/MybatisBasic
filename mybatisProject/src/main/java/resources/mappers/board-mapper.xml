@@ -1,15 +1,96 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
 <mapper namespace="boardMapper">
-	
-	<!-- int 자료형의 별칭 _int -내장기능 -->
-	<select id="listCount" resultType="_int">
-		SELECT COUNT(*)
-		FROM BOARD
-		WHERE STATUS='Y'
-	
-	</select>
+  	
+  	<select id="listCount" resultType="_int">
+  		SELECT COUNT(*)
+  		FROM BOARD
+  		WHERE STATUS = 'Y' 
+  	</select>
+  	<!-- 
+  	페이징 처리 방법 1 ) rownum 사용하여 직접 처리하기 
+  	<select id="selectList" parameterType="hashmap" resultMap="boardResultMap">	
+		SELECT *
+		FROM (SELECT ROWNUM,B.*
+		      FROM (SELECT BOARD_NO
+		                   ,BOARD_TITLE
+		                    ,BOARD_CONTENT
+		                    ,USER_ID "BOARD_WRITER"
+		                    ,COUNT
+		                    ,CREATE_DATE
+		                    ,B.STATUS
+		            FROM BOARD B
+		            JOIN MEMBER ON (USER_NO=BOARD_WRITER)
+		            ORDER BY CREATE_DATE DESC) B)
+		WHERE "ROWNUM" BETWEEN #{start} AND #{end} 
+  	
+  	</select>
+  	 -->
+  	 
+  	 <!-- 페이징 처리 방법 2) 마이바티스에서 제공하는 RowBounds 객체 이용하기  -->
+  	 <select id="selectList" resultMap="boardResultMap">
+  	 	SELECT BOARD_NO
+              ,BOARD_TITLE
+              ,USER_ID "BOARD_WRITER"
+              ,COUNT
+              ,CREATE_DATE
+       FROM BOARD B
+       JOIN MEMBER ON (USER_NO=BOARD_WRITER)
+       WHERE B.STATUS = 'Y'
+       ORDER BY CREATE_DATE DESC
+  	 </select>
+  	 
+  	 <!-- 조회수 증가 -->
+  	 <update id="increaseCount" parameterType="_int">
+  	 	UPDATE BOARD
+  	 	SET COUNT = COUNT+1
+  	 	WHERE BOARD_NO = #{bno}
+  	 	AND STATUS = 'Y'
+  	 </update>
+  	 
+  	 
+  	 <!-- 게시글 상세조회 -->
+  	 <select id="selectBoard" parameterType="_int" resultMap="boardResultMap">
+  	 	SELECT BOARD_NO
+  	 		  ,BOARD_TITLE
+  	 		  ,BOARD_CONTENT
+  	 		  ,USER_ID "BOARD_WRITER"
+  	 		  ,COUNT
+  	 		  ,CREATE_DATE
+  	 	FROM BOARD B
+  	 	JOIN MEMBER ON (USER_NO=BOARD_WRITER)
+  	 	WHERE BOARD_NO = #{bno}
+  	 	AND B.STATUS = 'Y'
+  	 </select>
+  	 
+  	 
+  	 <!-- 게시글 입력 -->
+  	 <insert id="insertBoard" parameterType="Board">
+  	 	INSERT INTO BOARD(BOARD_NO
+						 ,BOARD_TITLE
+					     ,BOARD_CONTENT
+						 ,BOARD_WRITER)
+		VALUES (SEQ_BNO.NEXTVAL
+			   ,#{boardTitle}
+			   ,#{boardContent}
+			   ,#{boardWriter})
+  	 </insert>
+  	 
+  	 
+  	<resultMap type="Board" id="boardResultMap">
+  		<result column="BOARD_NO" property="boardNo"/>
+  		<result column="BOARD_TITLE" property="boardTitle"/>
+  		<result column="BOARD_CONTENT" property="boardContent"/>
+  		<result column="BOARD_WRITER" property="boardWriter"/>
+  		<result column="COUNT" property="count"/>
+  		<result column="CREATE_DATE" property="createDate"/>
+  		<result column="STATUS" property="status"/>
+  	</resultMap>
+  	
+  	
+  	
+  	
+  
 </mapper>

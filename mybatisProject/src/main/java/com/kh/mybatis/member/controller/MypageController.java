@@ -22,8 +22,8 @@ public class MypageController extends HttpServlet {
 		HttpSession session = request.getSession();
 		Object o = session.getAttribute("loginMember");
 		
-		if(o!=null) {
-			session.setAttribute("alert", "로그인 후 이용 가능한 서비스 입니다");
+		if(o==null) {
+			session.setAttribute("alertMsg", "로그인 후 이용 가능한 서비스 입니다");
 			response.sendRedirect(request.getContextPath());
 		}else {
 		request.getRequestDispatcher("/WEB-INF/views/member/mypage.jsp").forward(request, response);

@@ -37,7 +37,6 @@ public class BoardDao {
 		bno.put("start", start);
 		bno.put("end", end);
 		
-		//2)마이바티스에서 제공하는 객체 rowBounds 이용하기 
 		
 		
 		return (ArrayList)sqlSession.selectList("boardMapper.selectList",bno);
@@ -45,6 +44,7 @@ public class BoardDao {
 	
 	*/
 	
+	//2)마이바티스에서 제공하는 객체 rowBounds 이용하기 
 	public ArrayList<Board> selectList(SqlSession sqlSession, PageInfo pi) {
 		
 		//방법2) 마이바티스에서 제공하는 rowbounds 객체 이용하기 
@@ -63,6 +63,7 @@ public class BoardDao {
 		RowBounds rowBounds = new RowBounds(offset,limit);
 		
 		//전달할 파라미터가 없어도 메소드의 매개변수 위치가 정해져있기 때문에 형식을 유지하기위해 null을 전달한다. 
+		//selectList("Mapper.--",매개변수,페이징 처리 정보)
 		ArrayList<Board> list = (ArrayList)sqlSession.selectList("boardMapper.selectList",null,rowBounds);
 		
 		return list;
